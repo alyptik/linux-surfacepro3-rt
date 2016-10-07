@@ -28,14 +28,14 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
 	'touchscreen_multitouch_fixes2.patch'
 	'wifi.patch'
         # Brain Fuck Scheduler & other personal patches
-        'bfq.patch'
-        'bfs.patch'
-        'block.patch'
-        'btrfs.patch'
-        'init.patch'
-        'kconfig.patch'
-        'xattr.patch'
-        'xfs.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfq.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/block.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/btrfs.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/init.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/kconfig.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/xattr.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/xfs.patch'
 )
 
 sha256sums=('3e9150065f193d3d94bcf46a1fe9f033c7ef7122ab71d75a7fb5a2f0c9a7e11a'
