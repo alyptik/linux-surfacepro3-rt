@@ -4,10 +4,11 @@
 pkgbase=linux-surfacepro3-rt
 _srcname=linux-4.8
 pkgver=4.8
+<<<<<<< HEAD
+pkgrel=1.2
+=======
 pkgrel=1.4
-arch=('i686' 'x86_64')
-url="https://github.com/alyptik/linux-surfacepro3-rt"
-license=('GPL2')
+>>>>>>> 8bb565c
 arch=('i686' 'x86_64')
 url="https://github.com/alyptik/linux-surfacepro3-rt"
 license=('GPL2')
@@ -80,13 +81,25 @@ prepare() {
   cd "${srcdir}/${_srcname}"
 
   # BFS patches not working currently
+<<<<<<< HEAD
+  #for i in bfs.patch bfs-fixes1.patch bfs-fixes2.patch; do
+=======
   #for i in bfq.patch bfs.patch bfs-fixes1.patch bfs-fixes2.patch; do
+>>>>>>> 8bb565c
   #  patch -p1 -i "${srcdir}/${i}"
   #done
 
   # Add RT patches
+  xzcat "${srcdir}/patch-${pkgver}-rt1.patch.xz" | patch -p1
+  #xzcat "${srcdir}/patch-${pkgver}-rt1.patch.xz" | patch -p1 -F3
+  #xzcat "${srcdir}/patches-${pkgver}-rt1.tar.xz" | patch -p1
+
   # Add personal patches
+<<<<<<< HEAD
+  for i in bfq.patch block.patch btrfs.patch init.patch kconfig.patch xattr.patch xfs.patch; do
+=======
   for i in block.patch btrfs.patch init.patch kconfig.patch xattr.patch xfs.patch; do
+>>>>>>> 8bb565c
     patch -p1 -i "${srcdir}/${i}"
   done
 
