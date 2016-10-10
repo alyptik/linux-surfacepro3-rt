@@ -8,6 +8,9 @@ pkgrel=1.6
 arch=('i686' 'x86_64')
 url="https://github.com/alyptik/linux-surfacepro3-rt"
 license=('GPL2')
+arch=('i686' 'x86_64')
+url="https://github.com/alyptik/linux-surfacepro3-rt"
+license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
@@ -83,6 +86,10 @@ prepare() {
   #  patch -p1 -i "${srcdir}/${i}"
   #done
 
+<<<<<<< HEAD
+  # Add RT patches
+=======
+>>>>>>> 354769d83fac2775ad3f6100281cf4e121fdcad6
   # Add personal patches
   for i in block.patch btrfs.patch init.patch kconfig.patch xattr.patch xfs.patch; do
     patch -p1 -i "${srcdir}/${i}"
