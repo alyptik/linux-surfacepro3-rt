@@ -2,9 +2,15 @@
 # Contributor: Matthew Wardrop <mister.wardrop@gmail.com>
 
 pkgbase=linux-surfacepro3-rt
+<<<<<<< HEAD
+_srcname=linux-4.8.2
+pkgver=4.8.2
+pkgrel=1.7
+=======
 _srcname=linux-4.8.6
 pkgver=4.8.6
 pkgrel=1.8
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
 arch=('i686' 'x86_64')
 url="https://github.com/alyptik/linux-surfacepro3-rt"
 license=('GPL2')
@@ -12,8 +18,13 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
+<<<<<<< HEAD
+        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt2.patch.xz"
+        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt2.patch.sign"
+=======
         "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt5.patch.xz"
         "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt5.patch.sign"
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
         # Brain Fuck Scheduler & other personal patches
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfq.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs.patch'
@@ -30,15 +41,20 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
 	'wifi.patch'
         # the main kernel config files
         'config' 'config.x86_64' 'config.sp3'
-        'config.sp3.final'
         # standard config files for mkinitcpio ramdisk
         'linux.preset'
         'change-default-console-loglevel.patch'
 )
 
+<<<<<<< HEAD
+sha256sums=('983636c755a397a1075001cd99fad8b85485bebf15e62ed56f3ca3ba5e225d03'
+            'SKIP'
+            '559f4f1fa49a7a362cd26bccad609f3f25c7c5be58f7d6404c73aa05349bb362'
+=======
 sha256sums=('74744e00420856cfc8049fa3b3a55e57a116994226a498ef56801bc9492df36b'
             'SKIP'
             'f0e1bc55ec0288e54e84cc35a9e16a9df93be3772fda58b654ece6260f12699a'
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
             'SKIP'
             '48afded166076dc357bfb68640297e0337c70d6f72e05e1eb040e694de0ad7ed'
             '51f91681b708149fe91e565f5c40811477428e2aa86f8726a20e0e7c55c5407c'
@@ -55,11 +71,11 @@ sha256sums=('74744e00420856cfc8049fa3b3a55e57a116994226a498ef56801bc9492df36b'
             '52e7c895aeb505bc8d3b5321a346fcdbb749f8035cacc97a237c24c1f527adbc'
             '0fcd0b22fe9ec58ba41b81b463f68d619b6898a5c405fb26c85237a183240371'
             '577a3c4c211e6946fb8c1448d6a325861b41c8c8660203ae7d63a58f3af0d279'
-            '293ac0c17f8addc6f259cfe7f89ff13d3fa64f4f5588f944bf43a2c8b2fdc4ef'
 <<<<<<< HEAD
+            '921f64223b44c51e762625a9d338fca9e728397e3d58415f322c90a9f15371ec'
 =======
-            '76e9c3a4a1cc727ad44a3f8c4e735872e81a893f91a520fd4601ab6fc67c3357'
->>>>>>> 022c23cb03b0dbb06f6971e0e70a8c9762257c05
+            '293ac0c17f8addc6f259cfe7f89ff13d3fa64f4f5588f944bf43a2c8b2fdc4ef'
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
@@ -72,15 +88,29 @@ validpgpkeys=(
 multitouch='y'
 sp3config='y'
 bcache='n'
+<<<<<<< HEAD
+=======
 bfs='n'
 bfq='n'
 personal='y'
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
 
 _kernelname=${pkgbase#linux}
 
 prepare() {
   cd "${srcdir}/${_srcname}"
 
+<<<<<<< HEAD
+  ## BFS/BFQ patches not working currently
+  #for i in bfq.patch bfs.patch bfs-fixes1.patch bfs-fixes2.patch; do
+  #  patch -p1 -i "${srcdir}/${i}"
+  #done
+
+  ## Add personal patches
+  for i in block.patch btrfs.patch init.patch kconfig.patch xattr.patch xfs.patch; do
+    patch -p1 -i "${srcdir}/${i}"
+  done
+=======
   ## BFS/BFQ patches and unsupported BCache module; none of these worked during current testing
   if [ "$bfq" != 'n' ]; then patch -p1 -i "${srcdir}/bfq.patch"; fi
   if [ "$bfs" != 'n' ]; then
@@ -96,9 +126,22 @@ prepare() {
   if [ "$personal" != 'n' ]; then
     for i in block.patch init.patch kconfig.patch xattr.patch xfs.patch; do patch -p1 -i "${srcdir}/${i}"; done
   fi
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
+
+  ## Enable unsupported bcache module
+  if [ "$bcache" != 'n' ]; then
+    sed -i '\%^diff --git a/drivers/md/bcache/Kconfig b/drivers/md/bcache/Kconfig$%,+11 d' "${srcdir}/patch-${pkgver}-rt2.patch"
+    cp "${srcdir}/linux-${pkgver}/include/linux/rwsem.h" "${srcdir}/linux-${pkgver}/drivers/md/bcache/"
+    sed -i '/#include "bcache.h"/i #include "rwsem.h"\n' "${srcdir}/linux-${pkgver}/drivers/md/bcache/request.c"
+  fi
 
   # Add RT patches
+<<<<<<< HEAD
+  patch -p1 -i "${srcdir}/patch-${pkgver}-rt2.patch"
+  #xzcat "${srcdir}/patch-${pkgver}-rt1.patch.xz" | patch -p1 -F3
+=======
   patch -p1 -i "${srcdir}/patch-${pkgver}-rt5.patch"
+>>>>>>> 34a45299d21434e9c986524a7993b0b1c9b0f911
 
   # add upstream patch
   #patch -p1 -i "${srcdir}/patch-${pkgver}"
