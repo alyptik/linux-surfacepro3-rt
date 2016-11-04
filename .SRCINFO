@@ -32,7 +32,6 @@ pkgbase = linux-surfacepro3-rt
 	source = config
 	source = config.x86_64
 	source = config.sp3
-	source = config.sp3.final
 	source = linux.preset
 	source = change-default-console-loglevel.patch
 	validpgpkeys = ABAF11C65A2970B130ABE3C479BE3E4300411886
