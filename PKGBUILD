@@ -2,9 +2,9 @@
 # Contributor: Matthew Wardrop <mister.wardrop@gmail.com>
 
 pkgbase=linux-surfacepro3-rt
-_srcname=linux-4.8.2
-pkgver=4.8.2
-pkgrel=1.7
+_srcname=linux-4.8.6
+pkgver=4.8.6
+pkgrel=2.0
 arch=('i686' 'x86_64')
 url="https://github.com/alyptik/linux-surfacepro3-rt"
 license=('GPL2')
@@ -12,15 +12,15 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.sign"
-        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt2.patch.xz"
-        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt2.patch.sign"
+        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt5.patch.xz"
+        "https://www.kernel.org/pub/linux/kernel/projects/rt/${pkgver%.*}/older/patch-${pkgver}-rt5.patch.sign"
         # Brain Fuck Scheduler & other personal patches
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfq.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs-fixes1.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs-fixes2.patch'
+        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/bfs-fixes3.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/block.patch'
-        'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/btrfs.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/init.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/kconfig.patch'
         'https://raw.githubusercontent.com/alyptik/linux-surfacepro3-rt/github/xattr.patch'
@@ -36,16 +36,16 @@ source=("https://www.kernel.org/pub/linux/kernel/v4.x/${_srcname}.tar.xz"
         'change-default-console-loglevel.patch'
 )
 
-sha256sums=('983636c755a397a1075001cd99fad8b85485bebf15e62ed56f3ca3ba5e225d03'
+sha256sums=('74744e00420856cfc8049fa3b3a55e57a116994226a498ef56801bc9492df36b'
             'SKIP'
-            '559f4f1fa49a7a362cd26bccad609f3f25c7c5be58f7d6404c73aa05349bb362'
+            'f0e1bc55ec0288e54e84cc35a9e16a9df93be3772fda58b654ece6260f12699a'
             'SKIP'
-            '48afded166076dc357bfb68640297e0337c70d6f72e05e1eb040e694de0ad7ed'
+            '242d32d0fe819852e74d93b8a044cf24a40a9474d6f00ca93a19aa98298dcefa'
             '51f91681b708149fe91e565f5c40811477428e2aa86f8726a20e0e7c55c5407c'
             'cec65d71766429be99bdc9da7897584fdc4bf4df3a4b26d228ff55a76ea3d8ea'
             '48d0d2e549ceddc18a59cc5f0d9325db5727ac82a9a4829c99a781ce979e1a6d'
+            '1a178463958f6b7f05a32c437f2674ecb25f2b1a0bf0cb2880d504efd8ba59c6'
             'ba5c7ee929108ac05800d7c8a7a28c28b2e04679ad33089ea53af15a955d5c5e'
-            '95bbb2b4c84c1faf5ebbe229a9d458a1c37524175ba71f07adc6fc4dbf09a80e'
             'ec655100ebc32d6699a258d7682953f928d1eb1042b895b04283d85ae57b80c1'
             'f479a5ca6abe4d50ca4c09e6e83a027369fcd3efff8d5ce60f0699d8fa47beb8'
             '4633ae19b9a9871a3cfffba98ec7c3cd240f64bef8a0eebcf1212219c80972fd'
@@ -56,7 +56,7 @@ sha256sums=('983636c755a397a1075001cd99fad8b85485bebf15e62ed56f3ca3ba5e225d03'
             '52e7c895aeb505bc8d3b5321a346fcdbb749f8035cacc97a237c24c1f527adbc'
             '0fcd0b22fe9ec58ba41b81b463f68d619b6898a5c405fb26c85237a183240371'
             '577a3c4c211e6946fb8c1448d6a325861b41c8c8660203ae7d63a58f3af0d279'
-            '921f64223b44c51e762625a9d338fca9e728397e3d58415f322c90a9f15371ec'
+            '5c92eb5febe5bafcc76f19aa3d4aaf723cfbb465615cd68ecfaea54a2f773994'
             'f0d90e756f14533ee67afda280500511a62465b4f76adcc5effa95a40045179c'
             '1256b241cd477b265a3c2d64bdc19ffe3c9bbcee82ea3994c590c2c76e767d99')
 
@@ -69,61 +69,52 @@ validpgpkeys=(
 multitouch='y'
 sp3config='y'
 bcache='n'
+bfs='n'
+bfq='n'
+personal='y'
 
 _kernelname=${pkgbase#linux}
 
 prepare() {
   cd "${srcdir}/${_srcname}"
 
-  ## BFS/BFQ patches not working currently
-  #for i in bfq.patch bfs.patch bfs-fixes1.patch bfs-fixes2.patch; do
-  #  patch -p1 -i "${srcdir}/${i}"
-  #done
-
-  ## Add personal patches
-  for i in block.patch btrfs.patch init.patch kconfig.patch xattr.patch xfs.patch; do
-    patch -p1 -i "${srcdir}/${i}"
-  done
-
-  ## Enable unsupported bcache module
-  if [ "$bcache" != 'n' ]; then
+  ## Options which are currently buggy/broken: BFS/BFQ patches and unsupported BCache module
+  if [ "$bfq" = 'y' ]; then patch -p1 -i "${srcdir}/bfq.patch"; fi
+  if [ "$bfs" = 'y' ]; then for i in bfs bfs-fixes{1..3}; do patch -p1 -i "${srcdir}/${i}.patch"; done; fi
+  if [ "$bcache" = 'y' ]; then
     sed -i '\%^diff --git a/drivers/md/bcache/Kconfig b/drivers/md/bcache/Kconfig$%,+11 d' "${srcdir}/patch-${pkgver}-rt2.patch"
     cp "${srcdir}/linux-${pkgver}/include/linux/rwsem.h" "${srcdir}/linux-${pkgver}/drivers/md/bcache/"
     sed -i '/#include "bcache.h"/i #include "rwsem.h"\n' "${srcdir}/linux-${pkgver}/drivers/md/bcache/request.c"
   fi
 
+  ## Add personal patches
+  if [ "$personal" = 'y' ]; then for i in block init kconfig xattr xfs; do patch -p1 -i "${srcdir}/${i}.patch"; done; fi
+
   # Add RT patches
-  patch -p1 -i "${srcdir}/patch-${pkgver}-rt2.patch"
-  #xzcat "${srcdir}/patch-${pkgver}-rt1.patch.xz" | patch -p1 -F3
-
-  # add upstream patch
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
-
-  # add latest fixes from stable queue, if needed
-  # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
+  patch -p1 -i "${srcdir}/patch-${pkgver}-rt5.patch"
 
   # set DEFAULT_CONSOLE_LOGLEVEL to 4 (same value as the 'quiet' kernel param)
   # remove this when a Kconfig knob is made available by upstream
   # (relevant patch sent upstream: https://lkml.org/lkml/2011/7/26/227)
-  #patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
+  patch -p1 -i "${srcdir}/change-default-console-loglevel.patch"
 
   # This patch disables some wireless optimisations which cause trouble on Surface devices.
   patch -p1 -i "${srcdir}/wifi.patch"
 
   # This patch adds multitouch support for the surface pro 3
   # keyboard cover.
-  if [ "$multitouch" != 'n' ]; then
-    patch -p1 -i "${srcdir}/multitouch.patch"
-  fi
+  if [ "$multitouch" = 'y' ]; then patch -p1 -i "${srcdir}/multitouch.patch"; fi
 
   # These patches work around buggy hardware implementations
   # in the surface pro 3 touchscreen module.
   patch -p1 -i "${srcdir}/touchscreen_multitouch_fixes1.patch"
   patch -p1 -i "${srcdir}/touchscreen_multitouch_fixes2.patch"
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    ## Set sp3config='y' to use the personal config as a base
-    [[ "$sp3config" != 'n' ]] && cat "${srcdir}/config.sp3" >./.config || cat "${srcdir}/config.x86_64" >./.config
+  ## If sp3config='y' use personal config as a base
+  if [ "$sp3config" = 'y' ]; then
+    cat "${srcdir}/config.sp3" >./.config
+  elif [ "${CARCH}" = "x86_64" ]; then
+    cat "${srcdir}/config.x86_64" >./.config
   else
     cat "${srcdir}/config" > ./.config
   fi
@@ -147,11 +138,18 @@ prepare() {
   #make olddefconfia # Use current kernel configuration
   # ... or manually edit .config
 
-  printf '\n \033[32m %s \033[0m ' "[Run interactive nconfig? (Y/n)]"; read -r; echo
+  printf '\n \033[32m %s \033[0m ' "[Run make ([n]config|[o]lddefconfig) or [s]kip? (n/o/S)]"; read -r; echo
   case $REPLY in
-          [Yy]*|'') make nconfig ;; # new CLI menu for configuration
-          [Nn]*) printf ' \033[31m %s \n\033[0m ' "Continuing..."; make olddefconfig ;;
-          *) printf ' \033[31m %s \n\033[0m ' "Invalid input..."; return 1 ;;
+          [Nn]*) make nconfig ;; # new CLI menu for configuration
+          [Oo]*) make olddefconfig ;;
+          *) printf ' \033[32m %s \n\033[0m ' "Continuing..."; ;;
+  esac
+
+  printf '\n \033[32m %s \033[0m ' "[Run local([m]odconfig|[y]esconfig) or [s]kip? (m/y/S)]"; read -r; echo
+  case $REPLY in
+          [Mm]*) make localmodconfig ;;
+          [Yy]*) make localyesconfig ;;
+          *) printf ' \033[32m %s \n\033[0m ' "Continuing..." ;;
   esac
 
   # get kernel version
